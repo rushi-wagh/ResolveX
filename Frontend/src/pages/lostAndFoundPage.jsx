@@ -91,7 +91,7 @@ const LostFoundDashboard = () => {
                     <img
                       src={item.images[0]}
                       alt={item.title}
-                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                      className="h-full w-full object-contain bg-slate-50 p-2 transition duration-500 group-hover:scale-105"
                     />
                   ) : (
                     <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-slate-100 via-white to-slate-200 text-slate-400">

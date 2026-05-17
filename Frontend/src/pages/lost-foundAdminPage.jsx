@@ -69,7 +69,7 @@ const AdminModerationPanel = () => {
                 <img
                   src={c.images?.[0] || "/placeholder.jpg"}
                   alt={c.title}
-                  className="h-48 w-full object-cover"
+                  className="h-48 w-full object-contain bg-slate-50 p-2"
                 />
 
                 <div className="p-4">

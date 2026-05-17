@@ -98,7 +98,7 @@ const LostFoundItemDetail = () => {
             <img
               src={currentItem.images?.[0] || "/placeholder.jpg"}
               alt={currentItem.title}
-              className="w-full h-96 object-cover rounded-2xl"
+              className="w-full h-96 object-contain bg-slate-50 p-4 rounded-2xl"
             />
 
             <div>
