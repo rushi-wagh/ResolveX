@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 import { useIssueStore } from "../store/useIssueStore";
+import { ImageOff } from "lucide-react";
 
 const statusColor = {
   OPEN: "bg-indigo-100 text-indigo-600",
@@ -80,10 +81,7 @@ const AdminIssues = () => {
                     <div
                       className="h-full bg-indigo-500 rounded-full transition-all"
                       style={{
-                        width: `${Math.min(
-                          (item.count / total) * 100,
-                          100
-                        )}%`,
+                        width: `${Math.min((item.count / total) * 100, 100)}%`,
                       }}
                     />
                   </div>
@@ -137,71 +135,93 @@ const AdminIssues = () => {
             {allIssues.map((i) => (
               <div
                 key={i._id}
-                className="bg-white/70 backdrop-blur-xl p-5 rounded-2xl shadow-md border border-white/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:shadow-lg transition"
+                className="bg-white/70 backdrop-blur-xl p-4 rounded-2xl shadow-md border border-white/40 hover:shadow-lg transition"
               >
-                <div>
-                  <div className="flex items-start justify-between gap-3">
-                    <h3 className="font-semibold text-slate-800">
-                      {i.title}
-                    </h3>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="relative overflow-hidden bg-slate-100 aspect-[4/3] sm:w-40 sm:flex-none rounded-2xl">
+                    {i.image ? (
+                      <img
+                        src={i.image}
+                        alt={i.title || "Issue image"}
+                        className="h-full w-full object-cover transition duration-500 hover:scale-105"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-indigo-50 via-sky-50 to-emerald-50 text-slate-400">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200">
+                          <ImageOff className="h-5 w-5" />
+                        </div>
+                        <span className="text-[10px] font-medium uppercase tracking-[0.18em]">
+                          No image
+                        </span>
+                      </div>
+                    )}
 
-                    <div className="flex flex-col items-end gap-0.5">
-                      {i.duplicateCount > 0 ? (
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 font-medium">
-                           {i.duplicateCount} Similiar Issues
-                        </span>
-                      ) : (
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium">
-                          No Similar Issu
-                        </span>
-                      )}
-
-                      {i.priority === "Emergency" && (
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-red-600 text-white">
-                          🚨 Emergency
-                        </span>
-                      )}
-                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/25 via-transparent to-transparent" />
                   </div>
 
-                  <p className="text-xs text-slate-500 mt-1">
-                    {i.hostel} • Block {i.block} • Room {i.roomNumber}
-                  </p>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-3">
+                      <h3 className="font-semibold text-slate-800 break-words">
+                        {i.title}
+                      </h3>
 
-                  <div className="flex flex-wrap gap-2 mt-3 text-xs">
-                    <span
-                      className={`px-3 py-1 rounded-full font-medium ${statusColor[i.status]}`}
-                    >
-                      {i.status}
-                    </span>
+                      <div className="flex flex-col items-end gap-0.5 shrink-0">
+                        {i.duplicateCount > 0 ? (
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 font-medium">
+                            {i.duplicateCount} Similar Issues
+                          </span>
+                        ) : (
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium">
+                            No Similar Issues
+                          </span>
+                        )}
 
-                    <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-600">
-                      {i.category}
-                    </span>
+                        {i.priority === "Emergency" && (
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-red-600 text-white">
+                            🚨 Emergency
+                          </span>
+                        )}
+                      </div>
+                    </div>
 
-                    <span
-                      className={`px-3 py-1 rounded-full font-medium 
-                        ${
+                    <p className="text-xs text-slate-500 mt-1">
+                      {i.hostel} • Block {i.block} • Room {i.roomNumber}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 mt-3 text-xs">
+                      <span
+                        className={`px-3 py-1 rounded-full font-medium ${statusColor[i.status]}`}
+                      >
+                        {i.status}
+                      </span>
+
+                      <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-600">
+                        {i.category}
+                      </span>
+
+                      <span
+                        className={`px-3 py-1 rounded-full font-medium ${
                           i.issueType === "Public"
                             ? "bg-emerald-100 text-emerald-600"
                             : "bg-amber-100 text-amber-600"
                         }`}
-                    >
-                      {i.issueType}
-                    </span>
+                      >
+                        {i.issueType}
+                      </span>
+                    </div>
                   </div>
-                </div>
 
-                <select
-                  value={i.status}
-                  onChange={(e) => updateStatus(i._id, e.target.value)}
-                  className="h-11 px-4 rounded-xl border border-slate-200 bg-white shadow-sm focus:ring-2 focus:ring-indigo-300 outline-none"
-                >
-                  <option value="OPEN">OPEN</option>
-                  <option value="IN_PROGRESS">IN_PROGRESS</option>
-                  <option value="RESOLVED">RESOLVED</option>
-                  <option value="ESCALATED">ESCALATED</option>
-                </select>
+                  <select
+                    value={i.status}
+                    onChange={(e) => updateStatus(i._id, e.target.value)}
+                    className="h-11 px-4 rounded-xl border border-slate-200 bg-white shadow-sm focus:ring-2 focus:ring-indigo-300 outline-none sm:self-start"
+                  >
+                    <option value="OPEN">OPEN</option>
+                    <option value="IN_PROGRESS">IN_PROGRESS</option>
+                    <option value="RESOLVED">RESOLVED</option>
+                    <option value="ESCALATED">ESCALATED</option>
+                  </select>
+                </div>
               </div>
             ))}
           </div>

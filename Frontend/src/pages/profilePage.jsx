@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Toast from "../components/Toast";
 import useToast from "../hooks/useToast";
 import Navbar from "../components/NavBar";
@@ -6,6 +7,7 @@ import Footer from "../components/Footer";
 import { useProfileStore } from "../store/useProfileStore";
 
 const Profile = () => {
+  const navigate = useNavigate();
   const { toast, showToast, hideToast } = useToast();
   const { profile, completion, getProfile, updateProfile } = useProfileStore();
 
@@ -56,6 +58,7 @@ const Profile = () => {
     }
 
     showToast("success", res.message || "Profile updated successfully");
+    setTimeout(() => navigate("/", { replace: true }), 700);
   };
   const hostelOptions = {
     "Sunrise Hall": ["A", "B", "C"],

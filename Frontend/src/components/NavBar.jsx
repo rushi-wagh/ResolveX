@@ -33,8 +33,11 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
+    setOpenProfile(false);
+    setOpenLF(false);
+    setOpenIssue(false);
     showToast("success", "Logged out successfully");
-    setTimeout(() => navigate("/"), 500);
+    setTimeout(() => navigate("/login", { replace: true }), 500);
   };
 
   return (

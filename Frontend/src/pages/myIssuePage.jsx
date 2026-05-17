@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
 import { useIssueStore } from "../store/useIssueStore";
+import { ImageOff } from "lucide-react";
 
 const statusColor = {
   OPEN: "bg-indigo-100 text-indigo-600",
@@ -100,21 +101,29 @@ const MyIssues = () => {
                 key={issue?._id}
                 className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-md border border-white/40 overflow-hidden hover:shadow-xl transition"
               >
-                <div className="relative w-full h-40">
+                <div className="relative overflow-hidden bg-slate-100 aspect-[4/3]">
                   {issue?.image ? (
                     <img
                       src={issue.image}
                       alt={issue.title || "Issue image"}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition duration-500 hover:scale-105"
                     />
                   ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center bg-linear-to-br from-indigo-100 via-sky-100 to-emerald-100">
-                      <span className="text-3xl">📷</span>
-                      <span className="text-xs text-slate-500 mt-1">
-                        No image uploaded
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-indigo-50 via-sky-50 to-emerald-50 text-slate-400">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200">
+                        <ImageOff className="h-6 w-6" />
+                      </div>
+                      <span className="text-xs font-medium uppercase tracking-[0.2em]">
+                        No image
                       </span>
                     </div>
                   )}
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent" />
+
+                  <span className="absolute left-3 bottom-3 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-slate-700 shadow-sm backdrop-blur">
+                    Issue Photo
+                  </span>
                 </div>
 
                 <div className="p-4">

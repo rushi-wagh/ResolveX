@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Plus, Search, SlidersHorizontal } from "lucide-react";
+import { ImageOff, Plus, Search, SlidersHorizontal } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
@@ -80,18 +80,31 @@ const LostFoundDashboard = () => {
           {filteredItems.map((item) => (
             <div
               key={item._id}
-              className="bg-white rounded-2xl shadow-sm overflow-hidden"
+              className="group bg-white rounded-3xl shadow-sm ring-1 ring-slate-200/80 overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-xl"
             >
               <div
                 onClick={() => navigate(`/lost-found/${item._id}`)}
                 className="cursor-pointer"
               >
-                <div className="relative">
-                  <img
-                    src={item.images?.[0] || "/placeholder.jpg"}
-                    alt={item.title}
-                    className="h-44 w-full object-cover"
-                  />
+                <div className="relative overflow-hidden bg-slate-100 aspect-[4/3]">
+                  {item.images?.[0] ? (
+                    <img
+                      src={item.images[0]}
+                      alt={item.title}
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-slate-100 via-white to-slate-200 text-slate-400">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200">
+                        <ImageOff className="h-7 w-7" />
+                      </div>
+                      <span className="text-xs font-medium uppercase tracking-[0.2em]">
+                        No image
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-transparent" />
 
                   <span
                     className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-semibold
@@ -105,14 +118,15 @@ const LostFoundDashboard = () => {
                   >
                     {item.status}
                   </span>
+
+                      <span className="absolute left-2 bottom-2 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-700 shadow-sm backdrop-blur">
+                        {item.category}
+                      </span>
                 </div>
 
-                <div className="p-3">
-                  <span className="inline-block mb-1 px-2 py-0.5 text-xs rounded-full bg-indigo-100 text-indigo-600">
-                    {item.category}
-                  </span>
+                    <div className="p-4 space-y-1.5">
 
-                  <h3 className="font-semibold text-sm line-clamp-1">
+                      <h3 className="font-semibold text-sm text-slate-900 line-clamp-1">
                     {item.title}
                   </h3>
 
@@ -126,7 +140,7 @@ const LostFoundDashboard = () => {
               {item.status === "LOST" && (
                 <button
                   onClick={() => fetchMatches(item._id)}
-                  className="w-full text-xs py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition font-medium"
+                  className="w-full border-t border-slate-100 text-xs py-2.5 bg-indigo-50/80 text-indigo-700 hover:bg-indigo-100 transition font-medium"
                 >
                   🔍 Find Matches
                 </button>

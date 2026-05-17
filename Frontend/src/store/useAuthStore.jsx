@@ -9,6 +9,16 @@ export const useAuthStore = create(
       isAuthenticated: false,
       loading: false,
 
+      clearAuth: () => {
+        set({
+          user: null,
+          isAuthenticated: false,
+          loading: false,
+        });
+
+        localStorage.removeItem("auth-storage");
+      },
+
       login: async (credentials) => {
         try {
           set({ loading: true });
@@ -56,11 +66,17 @@ export const useAuthStore = create(
       },
 
       logout: async () => {
-        await api.post("/api/v1/auth/logout"); // 🔥 call backend
+        try {
+          await api.post("/api/v1/auth/logout"); // 🔥 call backend
+        } catch {}
+
         set({
           user: null,
           isAuthenticated: false,
+          loading: false,
         });
+
+        localStorage.removeItem("auth-storage");
       },
 
       getMe: async () => {
@@ -82,6 +98,8 @@ export const useAuthStore = create(
             isAuthenticated: false,
             loading: false,
           });
+
+          localStorage.removeItem("auth-storage");
 
           return {
             success: false,
