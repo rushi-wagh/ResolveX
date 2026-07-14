@@ -26,12 +26,12 @@ export const getUserProfile = async (req, res) => {
         .status(404)
         .json({ success: false, message: "User not found" });
     }
-    const obj = user.toObject();
-    const totalFields = 10;
-    const filledCount = Object.values(obj).filter(
-      (val) => val !== null && val !== undefined && val !== "",
-    ).length;
-    const percentage = Math.round((filledCount / totalFields) * 100);
+    const profileFields = ["name", "email", "hostelId", "hostel", "block", "room"];
+    const filledCount = profileFields.filter((field) => {
+      const val = user[field];
+      return val !== null && val !== undefined && val !== "";
+    }).length;
+    const percentage = Math.round((filledCount / profileFields.length) * 100);
 
     res.status(200).json({ success: true, data: {user, percentage} });
   } catch (error) {
